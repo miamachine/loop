@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Loop</string>
+    <string name="loop_title_hint">What title best describes what you\'ll be doing?</string>
+    <string name="loop_title_label">Title</string>
+    <string name="loop_details_label">Details</string>
+    <string name="loop_recurring_label">Recurring?</string>
+    <string name="loops_title">Loops</string>
+    <string name="date_picker_title">Date of next loop:</string>
+    <string name="new_loop">New Loop</string>
+    <string name="delete_loop">Delete</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="Teal_500">#009688</color>
+    <color name="Teal_900">#004d40</color>
+    <color name="Teal_200">#80cbc4</color>
+
+</resources>

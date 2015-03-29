@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menu_item_new_loop"
+        android:title="@string/new_loop"
+        android:icon="@android:drawable/ic_menu_add"
+        yourapp:showAsAction="ifRoom|withText" />
+
+</menu>
