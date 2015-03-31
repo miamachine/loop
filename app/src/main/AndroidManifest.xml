@@ -20,6 +20,11 @@
             <meta-date android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoopListActivity" />
         </activity>
+        <activity android:name=".LoopCreateActivity"
+            android:label="Loop">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoopListActivity" />
+        </activity>
     </application>
 
 </manifest>

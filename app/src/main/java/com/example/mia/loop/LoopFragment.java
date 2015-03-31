@@ -13,10 +13,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.Date;
 import java.util.UUID;
@@ -26,9 +30,10 @@ import java.util.UUID;
  */
 public class LoopFragment extends Fragment {
     private Loop mLoop;
-    private EditText mTitleField;
+    private TextView mTitleTextView;
     private Button mDateButton;
     private CheckBox mRecurringCheckBox;
+    private TextView mCategoryTextView;
     public static final String EXTRA_LOOP_ID = "com.example.mia.loop.loop_id";
     private static final String TAG = "LoopFragment";
     private static final String DIALOG_DATE = "date";
@@ -50,7 +55,7 @@ public class LoopFragment extends Fragment {
     }
 
     public static LoopFragment newInstance(UUID loopId) {
-        Log.d(TAG, "newInstance" + EXTRA_LOOP_ID);
+        Log.d(TAG, "newInstance");
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_LOOP_ID, loopId);
 
@@ -65,24 +70,8 @@ public class LoopFragment extends Fragment {
        Log.d(TAG, "onCreateView");
        View v = inflater.inflate(R.layout.fragment_loop, parent, false);
 
-       mTitleField = (EditText)v.findViewById(R.id.loop_title);
-       mTitleField.setText(mLoop.getTitle());
-       mTitleField.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mLoop.setTitle(s.toString());
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
+       mTitleTextView = (TextView)v.findViewById(R.id.loop_title);
+       mTitleTextView.setText(mLoop.getTitle());
 
        mDateButton = (Button)v.findViewById(R.id.loop_date);
        updateDate();
@@ -104,6 +93,9 @@ public class LoopFragment extends Fragment {
                mLoop.setRecurring(isChecked);
            }
        });
+
+       mCategoryTextView = (TextView)v.findViewById(R.id.loop_category);
+       mCategoryTextView.setText(mLoop.getCategoryType());
 
        return v;
    }

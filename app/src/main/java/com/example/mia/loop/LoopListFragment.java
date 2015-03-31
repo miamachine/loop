@@ -1,9 +1,11 @@
 package com.example.mia.loop;
 
-import android.app.ListFragment;
+import android.os.Build;
+import android.support.v4.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +16,10 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by mia on 3/26/15.
@@ -47,7 +52,6 @@ public class LoopListFragment extends ListFragment {
         // start LoopPagerActivity with this loop
         Intent i = new Intent(getActivity(), LoopPagerActivity.class);
         i.putExtra(LoopFragment.EXTRA_LOOP_ID, loop.getId());
-
         startActivity(i);
     }
 
@@ -70,6 +74,8 @@ public class LoopListFragment extends ListFragment {
             Loop loop = getItem(position);
 
             TextView titleTextView = (TextView)convertView.findViewById(R.id.loop_list_item_titleTextView);
+            int color = loop.getCategoryColor();
+            titleTextView.setTextColor(getResources().getColor(color));
             titleTextView.setText(loop.getTitle());
 
             TextView dateTextView = (TextView)convertView.findViewById(R.id.loop_list_item_dateTextView);
@@ -106,12 +112,41 @@ public class LoopListFragment extends ListFragment {
             case R.id.menu_item_new_loop:
                 Loop loop = new Loop();
                 Loops.get(getActivity()).addLoop(loop);
-                Intent i = new Intent(getActivity(), LoopPagerActivity.class);
-                i.putExtra(LoopFragment.EXTRA_LOOP_ID, loop.getId());
+                Intent i = new Intent(getActivity(), LoopCreateActivity.class);
+                i.putExtra(LoopCreateFragment.EXTRA_LOOP_ID, loop.getId());
+                UUID id = loop.getId();
+                Log.d(TAG, "loop.getId() " + id);
                 startActivityForResult(i, 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
+        View v;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            v = getActivity().getLayoutInflater().inflate(R.layout.fragment_loop_list, parent, false);
+            ListView listView = (ListView)v.findViewById(android.R.id.list);
+            FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.fab);
+            fab.attachToListView(listView);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Loop loop = new Loop();
+                    Loops.get(getActivity()).addLoop(loop);
+                    Intent i = new Intent(getActivity(), LoopCreateActivity.class);
+                    i.putExtra(LoopCreateFragment.EXTRA_LOOP_ID, loop.getId());
+                    UUID id = loop.getId();
+                    Log.d(TAG, "loop.getId() " + id);
+                    startActivityForResult(i, 0);
+                }
+            });
+        } else {
+            v = super.onCreateView(inflater, parent, savedInstanceState);
+        }
+        return v;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.mia.loop;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.ListFragment;
 
 import java.util.ArrayList;
