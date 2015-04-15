@@ -87,6 +87,7 @@ public class LoopListFragment extends ListFragment {
             categoryTextView.setText(loop.getCategoryType().toString());
 
             CheckBox recurringCheckBox = (CheckBox)convertView.findViewById(R.id.loop_list_item_recurringCheckBox);
+            recurringCheckBox.setTextColor(getResources().getColor(R.color.primary));
             recurringCheckBox.setChecked(loop.isRecurring());
 
             return convertView;
