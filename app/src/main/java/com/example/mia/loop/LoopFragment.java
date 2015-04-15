@@ -65,53 +65,53 @@ public class LoopFragment extends Fragment {
         return fragment;
     }
 
-   @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-       Log.d(TAG, "onCreateView");
-       View v = inflater.inflate(R.layout.fragment_loop, parent, false);
+        Log.d(TAG, "onCreateView");
+        View v = inflater.inflate(R.layout.fragment_loop, parent, false);
 
-       mTitleTextView = (TextView)v.findViewById(R.id.loop_title);
-       mTitleTextView.setText(mLoop.getTitle());
+        mTitleTextView = (TextView)v.findViewById(R.id.loop_title);
+        mTitleTextView.setText(mLoop.getTitle());
 
-       mDateButton = (Button)v.findViewById(R.id.loop_date);
-       updateDate();
-       mDateButton.setOnClickListener(new View.OnClickListener() {
-           public void onClick(View v) {
-               FragmentManager fm = getActivity().getSupportFragmentManager();
-               DatePickerFragment dialog = DatePickerFragment.newInstance(mLoop.getDate());
-               dialog.setTargetFragment(LoopFragment.this, REQUEST_DATE);
-               dialog.show(fm, DIALOG_DATE);
-           }
-       });
+        mDateButton = (Button)v.findViewById(R.id.loop_date);
+        updateDate();
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mLoop.getDate());
+                dialog.setTargetFragment(LoopFragment.this, REQUEST_DATE);
+                dialog.show(fm, DIALOG_DATE);
+            }
+        });
 
-       mRecurringCheckBox = (CheckBox)v.findViewById(R.id.loop_recurring);
-       mRecurringCheckBox.setChecked(mLoop.isRecurring());
-       mRecurringCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               // set the loop's recurring property
-               mLoop.setRecurring(isChecked);
-           }
-       });
+        mRecurringCheckBox = (CheckBox)v.findViewById(R.id.loop_recurring);
+        mRecurringCheckBox.setChecked(mLoop.isRecurring());
+        mRecurringCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // set the loop's recurring property
+                mLoop.setRecurring(isChecked);
+            }
+        });
 
-       mCategoryTextView = (TextView)v.findViewById(R.id.loop_category);
-       mCategoryTextView.setText(mLoop.getCategoryType());
+        mCategoryTextView = (TextView)v.findViewById(R.id.loop_category);
+        mCategoryTextView.setText(mLoop.getCategoryType());
 
-       return v;
-   }
+        return v;
+    }
 
-   @Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       Log.d(TAG, "onActivityResult");
-       if(resultCode != Activity.RESULT_OK){
-           return;
-       }
-       if(requestCode == REQUEST_DATE) {
-           Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-           mLoop.setDate(date);
-           updateDate();
-       }
-   }
+        Log.d(TAG, "onActivityResult");
+        if(resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if(requestCode == REQUEST_DATE) {
+            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mLoop.setDate(date);
+            updateDate();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -8,11 +8,17 @@
     <string name="loop_recurring_label">Recurring?</string>
     <string name="loops_title">Loops</string>
     <string name="date_picker_title">Date of next loop:</string>
+    <string name="loop_category_label">Category</string>
     <string name="new_loop">New Loop</string>
     <string name="delete_loop">Delete</string>
     <string name="action_settings">Settings</string>
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
+
+    <string name="category_academic_title_label">Academic</string>
+    <string name="category_academic_isForACourse_label">For a Class?</string>
+    <string name="category_academic_cn_hint">Course #</string>
+
 
     <color name="Teal_50">#e0f2f1</color>
     <color name="Teal_100">#b2dfdb</color>
@@ -25,8 +31,10 @@
     <color name="Teal_800">#00695c</color>
     <color name="primary_dark">#004d40</color>
     <color name="Teal_A100">#a7ffeb</color>
-
     <color name="primary_pressed">#00897b</color>
     <color name="ripple">#b2dfdb</color>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

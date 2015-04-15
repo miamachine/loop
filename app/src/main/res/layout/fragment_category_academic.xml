@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/bg_card">
+
+    <!-- category title !-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/category_academic_title_label"
+        />
+
+    <!-- is this loop for a specific UCM course? !-->
+    <CheckBox
+        android:id="@+id/category_academic_isForACourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/category_academic_isForACourse_label"
+        />
+
+    <!-- course details below are toggled by the above checkbox onClick !-->
+    <!-- select major for course !-->
+    <Spinner
+        android:id="@+id/category_academic_major"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        />
+    <!-- select course number !-->
+    <TextView
+        android:id="@+id/category_academic_cn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/category_academic_cn_hint"/>
+
+</LinearLayout>
