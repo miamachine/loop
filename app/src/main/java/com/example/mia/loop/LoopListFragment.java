@@ -81,7 +81,7 @@ public class LoopListFragment extends ListFragment {
 
             TextView dateTextView = (TextView)convertView.findViewById(R.id.loop_list_item_dateTextView);
             dateTextView.setTextColor(getResources().getColor(R.color.primary_dark));
-            dateTextView.setText(loop.getDate().toString());
+            dateTextView.setText(loop.getDateAndTime().toString());
 
             TextView categoryTextView = (TextView)convertView.findViewById(R.id.loop_list_item_categoryTextView);
             categoryTextView.setTextColor(getResources().getColor(color));

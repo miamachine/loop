@@ -25,22 +25,6 @@ public class TimePickerFragment extends DialogFragment  {
     private static final String TAG = "TimePickerFragment";
     private Date mTime;
 
-    private TimePicker.OnTimeChangedListener mTimeChangedListener = new TimePicker.OnTimeChangedListener() {
-        @Override
-        public void onTimeChanged(TimePicker view, int hour, int minute) {
-            // grab a calendar instance
-            Calendar calendar = Calendar.getInstance();
-            // set calendar's time to the new hour & minute values
-            calendar.set(Calendar.HOUR_OF_DAY, view.getCurrentHour());
-            calendar.set(Calendar.MINUTE, view.getCurrentMinute());
-            // convert Calendar to Date
-            mTime = calendar.getTime();
-            Log.d(TAG, mTime.toString());
-            // attach new time to the activity arguments
-            getArguments().putSerializable(EXTRA_TIME, mTime);
-        }
-    };
-
     public static TimePickerFragment newInstance(Date time) {
         Log.d(TAG, "newInstance");
         Bundle args = new Bundle();
@@ -58,8 +42,10 @@ public class TimePickerFragment extends DialogFragment  {
         mTime = (Date)getArguments().getSerializable(EXTRA_TIME);
 
         // create a calendar to get the year, month, and day
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mTime);
+        //Calendar calendar = Calendar.getInstance();
+        //int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        //calendar.setTime(mTime);
+        Log.d(TAG, mTime.toString());
         //int year = calendar.get(Calendar.YEAR);
         //int month = calendar.get(Calendar.MONTH);
         //int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -67,9 +53,19 @@ public class TimePickerFragment extends DialogFragment  {
         View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_time, null);
 
         TimePicker timePicker = (TimePicker)v.findViewById(R.id.dialog_time_timePicker);
-        timePicker.getCurrentHour();
-        timePicker.getCurrentMinute();
-        //TimePicker.init(year, month, day, mTimeChangedListener);
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mTime);
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                mTime = calendar.getTime();
+                getArguments().putSerializable(EXTRA_TIME, mTime);
+                //view.setCurrentHour(hourOfDay);
+                //view.setCurrentMinute(minute);
+                Log.d(TAG, hourOfDay + ":" + minute);
+            }
+        });
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)

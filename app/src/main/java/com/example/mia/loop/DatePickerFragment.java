@@ -27,7 +27,13 @@ public class DatePickerFragment extends DialogFragment  {
     private DatePicker.OnDateChangedListener mDateChangedListener = new DatePicker.OnDateChangedListener() {
         @Override
         public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime();
+            //mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(mDate);
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            mDate = calendar.getTime();
             getArguments().putSerializable(EXTRA_DATE, mDate);
         }
     };
