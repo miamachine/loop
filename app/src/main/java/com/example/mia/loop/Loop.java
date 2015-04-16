@@ -13,6 +13,7 @@ public class Loop {
     private UUID mId;
     private String mTitle;
     private Date mDate;
+    private Date mTime;
     private boolean mRecurring;
     private LoopCategoryType mCategoryType;
     private static final String TAG = "Loop";
@@ -23,6 +24,7 @@ public class Loop {
         // generate unique identifier
         mId = UUID.randomUUID();
         mDate = new Date();
+        mTime = new Date();
     }
 
     // methods shared by all Loop types
@@ -38,13 +40,17 @@ public class Loop {
         this.mTitle = title;
     }
 
-    // get and set next Loop occurrence
+    // get and set next Loop month, day, and year
     public Date getDate() {
         return mDate;
     }
     public void setDate(Date date) {
         this.mDate = date;
     }
+
+    // get and set Loop time
+    public Date getTime() { return mTime; }
+    public void setTime(Date time) { this.mTime = time; }
 
     // get and set whether the Loop is recurring
     public boolean isRecurring() { return mRecurring; }

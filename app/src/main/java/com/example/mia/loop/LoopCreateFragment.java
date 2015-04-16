@@ -31,16 +31,20 @@ public class LoopCreateFragment extends Fragment {
     private Loop mLoop;
     private EditText mTitleField;
     private Button mDateButton;
+    private Button mTimeButton;
     private CheckBox mRecurringCheckBox;
     private Spinner mCategorySpinner;
     public static final String EXTRA_LOOP_ID = "com.example.mia.loop.loop_id";
     private static final String TAG = "LoopCreateFragment";
     private static final String DIALOG_DATE = "date";
     private static final int REQUEST_DATE = 0;
+    private static final String DIALOG_TIME = "time";
+    private static final int REQUEST_TIME = 0;
 
     public void updateDate(){
         mDateButton.setText(mLoop.getDate().toString());
     }
+    public void updateTime() { mTimeButton.setText(mLoop.getTime().toString()); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,6 +102,17 @@ public class LoopCreateFragment extends Fragment {
             }
         });
 
+        mTimeButton = (Button)v.findViewById(R.id.loop_time);
+        updateTime();
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mLoop.getTime());
+                dialog.setTargetFragment(LoopCreateFragment.this, REQUEST_TIME);
+                dialog.show(fm, DIALOG_TIME);
+            }
+        });
+
         mRecurringCheckBox = (CheckBox)v.findViewById(R.id.loop_recurring);
         mRecurringCheckBox.setChecked(mLoop.isRecurring());
         mRecurringCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -138,6 +153,11 @@ public class LoopCreateFragment extends Fragment {
             Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mLoop.setDate(date);
             updateDate();
+        }
+        if(requestCode == REQUEST_TIME) {
+            Date time = (Date)data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            mLoop.setTime(time);
+            updateTime();
         }
     }
 

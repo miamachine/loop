@@ -8,6 +8,7 @@
     <string name="loop_recurring_label">Recurring?</string>
     <string name="loops_title">Loops</string>
     <string name="date_picker_title">Date of next loop:</string>
+    <string name="time_picker_title">Time of next loop:</string>
     <string name="loop_category_label">Category</string>
     <string name="new_loop">New Loop</string>
     <string name="delete_loop">Delete</string>
@@ -34,7 +35,6 @@
     <color name="primary_pressed">#00897b</color>
     <color name="ripple">#b2dfdb</color>
 
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_login">Login to Loop</string>
 
 </resources>
