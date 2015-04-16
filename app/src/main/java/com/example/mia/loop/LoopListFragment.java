@@ -37,7 +37,8 @@ public class LoopListFragment extends ListFragment {
         // returns the hosting activity and allows a fragment to handle more of
         // an activity's affairs
         getActivity().setTitle(R.string.loops_title);
-        mLoops = Loops.get(getActivity()).getLoops();
+        //mLoops = Loops.get(getActivity()).getLoops();
+        mLoops = Loops.get(getActivity()).getSeedLoops();
 
         LoopAdapter adapter = new LoopAdapter(mLoops);
         setListAdapter(adapter);

@@ -31,6 +31,8 @@ import java.util.UUID;
 public class LoginFragment extends Fragment {
     private static final String TAG = "LoginFragment";
     public static final String EXTRA_USER_ID = "com.example.mia.loop.user_id";
+    private Button mLoginButton;
+
     /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,18 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         View v = inflater.inflate(R.layout.activity_login, parent, false);
+
+        mLoginButton = (Button)v.findViewById(R.id.loginBtn);
+        //updateDate();
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                // start LoopPagerActivity with this loop
+                Intent i = new Intent(getActivity(), LoopListActivity.class);
+                //i.putExtra(LoopFragment.EXTRA_LOOP_ID, loop.getId());
+                startActivity(i);
+            }
+        });
 
         return v;
     }
