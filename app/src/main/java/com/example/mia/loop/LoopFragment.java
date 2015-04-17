@@ -23,6 +23,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -44,12 +47,38 @@ public class LoopFragment extends Fragment {
     private static final int REQUEST_TIME = 0;
 
 
+    public boolean isThisWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        calendar.setTime(date);
+        int loopDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        if(loopDayOfYear - dayOfYear < 6) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public void updateDate(){
-        mDateButton.setText(mLoop.getDateAndTime().toString());
+        if(isThisWeek(mLoop.getDateAndTime())) {
+            // just print day of week
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+            String dayOfTheWeek = sdf.format(mLoop.getDateAndTime());
+            mDateButton.setText(dayOfTheWeek);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("E");
+            String dayOfTheWeek = sdf.format(mLoop.getDateAndTime());
+            // print abbreviated day of week and full date
+            DateFormat df = DateFormat.getDateInstance();
+            mDateButton.setText(sdf.format(mLoop.getDateAndTime()) + " " + df.format(mLoop.getDateAndTime()));
+        }
+
     }
 
     public void updateTime() {
-        mTimeButton.setText(mLoop.getDateAndTime().toString());
+        DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
+        mTimeButton.setText(df.format(mLoop.getDateAndTime()));
     }
 
     @Override
@@ -115,7 +144,7 @@ public class LoopFragment extends Fragment {
         });
 
         mCategoryTextView = (TextView)v.findViewById(R.id.loop_category);
-        mCategoryTextView.setText(mLoop.getCategoryType());
+        mCategoryTextView.setText("Category: " + mLoop.getCategoryType());
 
         return v;
     }

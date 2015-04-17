@@ -1,6 +1,7 @@
 package com.example.mia.loop;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +21,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,8 +39,10 @@ import java.util.UUID;
 public class LoopCreateFragment extends Fragment {
     private Loop mLoop;
     private EditText mTitleField;
+    private EditText mDetailField;
     private Button mDateButton;
     private Button mTimeButton;
+    private ImageButton mAddFieldButton;
     private CheckBox mRecurringCheckBox;
     private Spinner mCategorySpinner;
     public static final String EXTRA_LOOP_ID = "com.example.mia.loop.loop_id";
@@ -41,12 +52,38 @@ public class LoopCreateFragment extends Fragment {
     private static final String DIALOG_TIME = "time";
     private static final int REQUEST_TIME = 0;
 
+    public boolean isThisWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        calendar.setTime(date);
+        int loopDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        if(loopDayOfYear - dayOfYear < 6) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public void updateDate(){
-        mDateButton.setText(mLoop.getDateAndTime().toString());
+        if(isThisWeek(mLoop.getDateAndTime())) {
+            // just print day of week
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+            String dayOfTheWeek = sdf.format(mLoop.getDateAndTime());
+            mDateButton.setText(dayOfTheWeek);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("E");
+            String dayOfTheWeek = sdf.format(mLoop.getDateAndTime());
+            // print abbreviated day of week and full date
+            DateFormat df = DateFormat.getDateInstance();
+            mDateButton.setText(sdf.format(mLoop.getDateAndTime()) + " " + df.format(mLoop.getDateAndTime()));
+        }
+
     }
 
     public void updateTime() {
-        mTimeButton.setText(mLoop.getDateAndTime().toString());
+        DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
+        mTimeButton.setText(df.format(mLoop.getDateAndTime()));
     }
 
     @Override
@@ -142,6 +179,41 @@ public class LoopCreateFragment extends Fragment {
                 Log.d(TAG, "onNothingSelected");
             }
         });
+
+        mDetailField = (EditText)v.findViewById(R.id.loop_detail);
+        //mDetailField.setText(mLoop.getTitle());
+        mDetailField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mLoop.setDetailText(s.toString());
+            }
+        });
+
+        mAddFieldButton = (ImageButton)v.findViewById(R.id.loop_add_detail);
+        mAddFieldButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout ll = (LinearLayout)v.findViewById(R.id.loop_create);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT );
+                lp.gravity = Gravity.RIGHT;
+
+                // TODO: FIX THE STUFF BELOW THIS LINE
+                EditText tv = new EditText();
+                tv.setLayoutParams(lp);
+                ll.addView(tv);
+            }
+        });
+
 
         return v;
     }
