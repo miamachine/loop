@@ -60,12 +60,21 @@ public class Loop {
     public void setCategoryType(LoopCategoryType category) { this.mCategoryType = category; }
     public int getCategoryColor() { return mCategoryType.color(); }
 
-    public void setDetailText(String text) { mCurrent.setText(text); }
-    public String getDetailText(String text) { return mCurrent.getText(); }
+    public void setDetailText(String text) {
+        Log.d(TAG, "text set to: " + text );
+        this.mCurrent.setDetail(text); }
+    public String getDetail() { return this.mCurrent.getDetail(); }
+
     public void setDetailType(Detail type) { this.mCurrent = type; }
     public String getDetailType() { return mCurrent.toString(); }
-    public void addDetail(Detail itemToAdd) { mDetails.add(itemToAdd); }
-    public void removeDetail(Detail itemToRemove) { mDetails.remove(itemToRemove); }
+
+    public void addDetail() {
+        if(!this.mCurrent.getDetail().isEmpty() && !this.getCategoryType().isEmpty()) {
+            this.mDetails.add(mCurrent);
+            Log.d(TAG, mCurrent.getDetail() + " added!");
+        }
+    }
+    public void removeDetail(Detail itemToRemove) { this.mDetails.remove(itemToRemove); }
     public ArrayList<Detail> getDetails() { return mDetails; }
 
     @Override
@@ -157,12 +166,12 @@ public class Loop {
         private String mType;
         private String mText;
         private Detail(String type) {
-            this.mType = type;
+            this.mType = type; this.mText = "";
         }
-        private void setText(String text) {
+        private void setDetail(String text) {
             this.mText = text;
         }
-        private String getText() {
+        private String getDetail() {
             return this.mText;
         }
         @Override

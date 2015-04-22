@@ -79,17 +79,17 @@ public class LoopListFragment extends ListFragment {
             titleTextView.setTextColor(getResources().getColor(R.color.primary));
             titleTextView.setText(loop.getTitle());
 
-            TextView dateTextView = (TextView)convertView.findViewById(R.id.loop_list_item_dateTextView);
-            dateTextView.setTextColor(getResources().getColor(R.color.primary_dark));
-            dateTextView.setText(loop.getDateAndTime().toString());
+            //TextView dateTextView = (TextView)convertView.findViewById(R.id.loop_list_item_dateTextView);
+            //dateTextView.setTextColor(getResources().getColor(R.color.primary_dark));
+            //dateTextView.setText(loop.getDateAndTime().toString());
 
             TextView categoryTextView = (TextView)convertView.findViewById(R.id.loop_list_item_categoryTextView);
             categoryTextView.setTextColor(getResources().getColor(color));
             categoryTextView.setText(loop.getCategoryType().toString());
 
-            CheckBox recurringCheckBox = (CheckBox)convertView.findViewById(R.id.loop_list_item_recurringCheckBox);
-            recurringCheckBox.setTextColor(getResources().getColor(R.color.primary));
-            recurringCheckBox.setChecked(loop.isRecurring());
+            //CheckBox recurringCheckBox = (CheckBox)convertView.findViewById(R.id.loop_list_item_recurringCheckBox);
+            //recurringCheckBox.setTextColor(getResources().getColor(R.color.primary));
+            //recurringCheckBox.setChecked(loop.isRecurring());
 
             return convertView;
         }

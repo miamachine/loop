@@ -45,24 +45,6 @@
             android:layout_height="fill_parent"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/loop_list_item_dateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="Loop date"
-                />
-            <CheckBox
-                android:id="@+id/loop_list_item_recurringCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:enabled="false"
-                android:focusable="false"
-                android:text="Recurring"/>
-
         </RelativeLayout>
 
     </LinearLayout>

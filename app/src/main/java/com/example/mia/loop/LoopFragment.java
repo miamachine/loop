@@ -109,6 +109,7 @@ public class LoopFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_loop, parent, false);
 
         mTitleTextView = (TextView)v.findViewById(R.id.loop_title);
+        mTitleTextView.setTextColor(getResources().getColor(R.color.primary));
         mTitleTextView.setText(mLoop.getTitle());
 
         mDateButton = (Button)v.findViewById(R.id.loop_date);
@@ -144,6 +145,7 @@ public class LoopFragment extends Fragment {
         });
 
         mCategoryTextView = (TextView)v.findViewById(R.id.loop_category);
+        mCategoryTextView.setTextColor(getResources().getColor(R.color.primary));
         mCategoryTextView.setText("Category: " + mLoop.getCategoryType());
 
         return v;

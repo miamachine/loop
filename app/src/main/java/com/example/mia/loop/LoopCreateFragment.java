@@ -2,6 +2,7 @@ package com.example.mia.loop;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +27,18 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,6 +46,8 @@ import java.util.UUID;
  */
 public class LoopCreateFragment extends Fragment {
     private Loop mLoop;
+    private Loop.Detail mLoopDetail;
+    private LinearLayout mLayout;
     private EditText mTitleField;
     private EditText mDetailField;
     private Button mDateButton;
@@ -45,6 +55,9 @@ public class LoopCreateFragment extends Fragment {
     private ImageButton mAddFieldButton;
     private CheckBox mRecurringCheckBox;
     private Spinner mCategorySpinner;
+    private Spinner mDetailTypeSpinner;
+    //private FloatingActionButton mFAB;
+    //private List<String> mEditTextList = new ArrayList<String>();
     public static final String EXTRA_LOOP_ID = "com.example.mia.loop.loop_id";
     private static final String TAG = "LoopCreateFragment";
     private static final String DIALOG_DATE = "date";
@@ -113,6 +126,7 @@ public class LoopCreateFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_loop_create, parent, false);
 
         mTitleField = (EditText)v.findViewById(R.id.loop_title);
+        mTitleField.setTextColor(getResources().getColor(R.color.primary));
         mTitleField.setText(mLoop.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -155,6 +169,7 @@ public class LoopCreateFragment extends Fragment {
 
         mRecurringCheckBox = (CheckBox)v.findViewById(R.id.loop_recurring);
         mRecurringCheckBox.setChecked(mLoop.isRecurring());
+        mRecurringCheckBox.setTextColor(getResources().getColor(R.color.primary));
         mRecurringCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -180,8 +195,10 @@ public class LoopCreateFragment extends Fragment {
             }
         });
 
+        mLayout = (LinearLayout)v.findViewById(R.id.loop_create);
         mDetailField = (EditText)v.findViewById(R.id.loop_detail);
-        //mDetailField.setText(mLoop.getTitle());
+        mDetailField.setTextColor(getResources().getColor(R.color.primary));
+        //mDetailField.setText(mLoop.getDetailText());
         mDetailField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -190,12 +207,14 @@ public class LoopCreateFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                Log.d(TAG, "Detail text changed!");
+                //mDetailField.setText(s.toString());
+                //mLoopDetail.set
+                mLoop.setDetailText(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                mLoop.setDetailText(s.toString());
             }
         });
 
@@ -203,16 +222,48 @@ public class LoopCreateFragment extends Fragment {
         mAddFieldButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout ll = (LinearLayout)v.findViewById(R.id.loop_create);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT );
-                lp.gravity = Gravity.RIGHT;
-
-                // TODO: FIX THE STUFF BELOW THIS LINE
-                EditText tv = new EditText();
-                tv.setLayoutParams(lp);
-                ll.addView(tv);
+                Log.d(TAG, "Button clicked! " + mLoop.getDetail());
+                String text = mLoop.getDetail();
+                Log.d(TAG, "New detail: " + text);
+                if(text != null) {
+                    mLayout.addView(addEditTextView(mDetailField.getText().toString()));
+                    //mLoop.setDetailText(mDetailField.getText().toString());
+                    String toAdd = mDetailField.getText().toString();
+                    Log.d(TAG, toAdd);
+                    mLoop.addDetail();
+                }
             }
         });
+
+        mDetailTypeSpinner = (Spinner)v.findViewById(R.id.loop_detail_spinner);
+        mDetailTypeSpinner.setAdapter(new ArrayAdapter<Loop.Detail>(getActivity(), android.R.layout.simple_spinner_item, Loop.Detail.values()));
+        mDetailTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected, position :" + position + ", id: " + id);
+                Loop.Detail detailType = (Loop.Detail)mDetailTypeSpinner.getSelectedItem();
+                mLoop.setDetailType(detailType);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "onNothingSelected");
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //v = getActivity().getLayoutInflater().inflate(R.layout.floating_action_button, parent, false);
+            ListView listView = (ListView)v.findViewById(android.R.id.list);
+            FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.fab);
+            fab.attachToListView(listView);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // save loop
+                }
+            });
+        }
 
 
         return v;
@@ -246,8 +297,44 @@ public class LoopCreateFragment extends Fragment {
                     NavUtils.navigateUpFromSameTask(getActivity());
                 }
                 return true;
+            case R.id.menu_item_save_loop:
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private TextView addEditTextView(String text) {
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final TextView textView = new TextView(this.getActivity());
+        textView.setLayoutParams(lp);
+        textView.setText(text);
+        mDetailField.setText("");
+        return textView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_create, menu);
+    }
+
+    /*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_new_loop:
+                Loop loop = new Loop();
+                Loops.get(getActivity()).addLoop(loop);
+                Intent i = new Intent(getActivity(), LoopCreateActivity.class);
+                i.putExtra(LoopCreateFragment.EXTRA_LOOP_ID, loop.getId());
+                UUID id = loop.getId();
+                Log.d(TAG, "loop.getId() " + id);
+                startActivityForResult(i, 0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    */
 }
